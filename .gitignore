@@ -5,4 +5,3 @@ coverage
 .jshintrc
 *.log
 package-lock.json
-dist

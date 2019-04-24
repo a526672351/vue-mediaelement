@@ -1,5 +1,6 @@
 const { resolve } = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 module.exports = {
   mode: 'production',
@@ -38,6 +39,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new ExtractTextPlugin('vue-mediaelement.css')
   ]
 };
