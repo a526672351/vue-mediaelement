@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --config ./webpack.example.config.js --inline --hot",
-    "remote-dev": "npm run dev --host",
+    "remote-dev": "npm run dev -- --host",
     "build": "webpack -p",
     "release": "standard-version & git push --follow-tags mediaelement master & npm publish",
     "prepare": "npm run build"
@@ -58,6 +58,7 @@
     "flv.js": "^1.5.0",
     "hls.js": "^0.12.4",
     "mediaelement": "^4.2.9",
+    "mediaelement-plugins": "^2.5.0",
     "wind-dom": "0.0.3"
   }
 }

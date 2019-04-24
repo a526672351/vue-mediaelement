@@ -1,54 +1,140 @@
 <template>
-  <video width="320" height="240">
-    <!-- <source
-      type="video/mp4"
-      src="https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
-    /> -->
-    <!-- <source type="video/youtube"
-      src="http://www.youtube.com/watch?v=nOEw9iiopwI"
-    /> -->
-    <object width="320" height="240" type="application/x-shockwave-flash" data="/dist/mediaelement-flash-video.swf">
-        <param name="movie" value="/dist/mediaelement-flash-video.swf" />
-        <param name="flashvars" value="controls=true&file=https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4" />
-        <!-- Image as a last resort -->
-        <!-- <img src="myvideo.jpg" width="320" height="240" title="No video playback capabilities" /> -->
-    </object>
+  <video :height="height" :width="width" :autoplay="autoplay" :preload="preload" >
   </video>
 </template>
 
+<style>
+.mejs__container {
+  min-width: auto !important;
+}
+.mejs__overlay-button {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+:not([style*='display: none']).mejs__controls {
+  background: none !important;
+}
+.mejs__controls div{
+  display: inline-block;
+}
+.mejs__time-rail {
+  width: 50%;
+}
+.mejs__fullscreen > button {
+    background-position: -80px 0 !important;
+}
+mediaelementwrapper,mediaelementwrapper > div {
+  height: 100%;
+  display: block;
+}
+mediaelementwrapper object{
+  width: 100% !important;
+  height: 100% !important;
+}
+</style>
+
 <script>
 // import flvjs from 'flv.js';
-import hlsjs from 'hls.js';
+// import hlsjs from 'hls.js';
 import 'mediaelement';
 import 'mediaelement/build/mediaelementplayer.min.css';
-import 'mediaelement/build/mediaelement-flash-video.swf';
-import 'mediaelement/build/mediaelement-flash-video-hls.swf';
+// import 'mediaelement/build/mediaelement-flash-video.swf';
+// import 'mediaelement/build/mediaelement-flash-video-hls.swf';
 
 export default {
+  props: {
+    source: {
+      type: String,
+      required: true,
+      default: ''
+    },
+    width: {
+      type: String,
+      required: false,
+      default: 'auto'
+    },
+    height: {
+      type: String,
+      required: false,
+      default: 'auto'
+    },
+    preload: {
+      type: String,
+      required: false,
+      default: 'none'
+    },
+    autoplay: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    forceLive: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    success: {
+      type: Function,
+      default() {
+        return false;
+      }
+    },
+    error: {
+      type: Function,
+      default() {
+        return false;
+      }
+    }
+  },
   data: () => ({
-    player: null
+    player: null,
   }),
   mounted() {
     const {MediaElementPlayer} = global;
-    // const {MediaElementPlayer, mejs} = global;
     // window.flvjs = flvjs;
-		window.Hls = hlsjs;
+		// window.Hls = hlsjs;
     this.player = new MediaElementPlayer(this.$el, {
-      pluginPath: 'https://cdnjs.com/libraries/mediaelement/',
-      // (by default, this is set as `sameDomain`)
+      // renderers: [''],
+      pluginPath: 'https://cdn.jsdelivr.net/npm/mediaelement@4.2.7/build/',
       shimScriptAccess: 'always',
-      success: function(mediaElement, originalNode, instance) {
-        console.log(mediaElement, originalNode, instance);
+      forceLive: this.forceLive,
+      // (by default, this is set as `sameDomain`)
+      // shimScriptAccess: 'always',
+      success: (mediaElement, originalNode, instance) => {
+        this.success(mediaElement, originalNode, instance);
+      },
+      error: (e) => {
+        this.error(e);
       }
     });
-    if (this.player) {
+    // if (this.player) {
       // this.player.on("play", () => {
       //   this.$emit("play");
       // });
+    // }
+  },
+  methods: {
+    Features(key) {
+      const {mejs} = global;
+      return mejs.Features[key];
+    },
+    remove() {
+      this.player.remove();
     }
   },
   beforeDestroy() {
-    this.player.remove();
-  }
+    this.remove();
+  },
+  watch: {
+    source: function (newSource) {
+      // console.log('source new', newSource);
+      // console.log('source old', oldSource);
+      this.player.setSrc(newSource);
+      this.player.setPoster('');
+      this.player.load();
+    }
+  },
 };
 </script>

@@ -32,12 +32,9 @@ module.exports = {
         loader: ['style-loader', 'css-loader']
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
-        loader: 'file-loader'
-      },
-      { test: /\.swf$/,
-        loader: "file-loader?name=[name].[ext]"
-      } 
+        test: /\.(png|jpg|gif|svg|swf)$/,
+        loader: 'file-loader?name=[name].[ext]'
+      }
     ]
   },
   plugins: [
