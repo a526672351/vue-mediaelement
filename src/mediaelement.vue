@@ -94,7 +94,8 @@ export default {
   mounted() {
     const {MediaElementPlayer} = global;
     // window.flvjs = flvjs;
-		// window.Hls = hlsjs;
+    // window.Hls = hlsjs;
+    const componentObject = this;
     this.player = new MediaElementPlayer(this.$el, {
       // renderers: [''],
       pluginPath: 'https://cdn.jsdelivr.net/npm/mediaelement@4.2.7/build/',
@@ -103,17 +104,24 @@ export default {
       // (by default, this is set as `sameDomain`)
       // shimScriptAccess: 'always',
       success: (mediaElement, originalNode, instance) => {
+        if (componentObject.autoplay) {
+          instance.setSrc(componentObject.source);
+        }
         this.success(mediaElement, originalNode, instance);
+				mediaElement.addEventListener('canplay', function () {
+            instance.play();
+				});
+        // mediaElement.addEventListener(Hls.Events.MEDIA_ATTACHED, function () {
+        //   // All the code when this event is reached...
+        //   console.log('Media attached!');
+        // });
+        // mediaElement.setSrc(this.source);
+        // mediaElement.play();
       },
       error: (e) => {
         this.error(e);
       }
     });
-    // if (this.player) {
-      // this.player.on("play", () => {
-      //   this.$emit("play");
-      // });
-    // }
   },
   methods: {
     Features(key) {

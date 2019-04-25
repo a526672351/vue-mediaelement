@@ -10,7 +10,7 @@
           </select>
       </div>
     </h4>
-    <mediaelement ref="vPlay" :autoplay="false" :forceLive="forceLive" :source="selected" width="500px" height="500px"></mediaelement>
+    <mediaelement ref="vPlay" :autoplay="true" :forceLive="forceLive" preload="true" :source="selected" width="500px" height="500px"></mediaelement>
     <button @click="close">关闭播放</button>
   </div>
 </template>
@@ -20,15 +20,14 @@ import { Mediaelement } from '../src';
 export default {
   data() {
     return {
-      selected: '',
+      selected: 'https://d2zihajmogu5jn.cloudfront.net/bipbop-advanced/bipbop_16x9_variant.m3u8',
       forceLive: false,
       sources: [{
         name: 'MP4',
         value: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4'
       }, {
         name: 'HLS',
-        value: 'https://sslproxy.yy.com:4443/livesystem/15013_xv_67871054_67871054_0_2_0-15013_xa_67871054_67871054_0_0_0.m3u8?org=yyweb&uuid=bb1491113a3f4556b990c9fc02681bd1&t=1556095933&tk=11ff560b449111c9640c9a62fa8d1448',
-        // value: 'https://d2zihajmogu5jn.cloudfront.net/bipbop-advanced/bipbop_16x9_variant.m3u8'
+        value: 'https://d2zihajmogu5jn.cloudfront.net/bipbop-advanced/bipbop_16x9_variant.m3u8'
       }, {
         name: 'FLV',
         value: 'https://github.com/mediaelement/mediaelement-files/blob/master/guqin.flv'
