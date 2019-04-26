@@ -2,7 +2,7 @@
   "name": "vue-mediaelement",
   "version": "1.0.0",
   "description": "video live player",
-  "main": "dist/vue-mediaelementv.js",
+  "main": "dist/vue-mediaelement.js",
   "scripts": {
     "dev": "webpack-dev-server --config ./webpack.example.config.js --inline --hot",
     "remote-dev": "npm run dev -- --host",
