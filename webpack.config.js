@@ -36,6 +36,14 @@ module.exports = {
         test: /\.(png|jpg|gif|svg|swf)$/,
         loader: 'file-loader?name=[name].[ext]'
       }
+      // {
+      //   test: /\.(png|jpg|gif|svg|swf)$/,
+      //   loader: 'url-loader',
+      //   options: {
+      //     limit: 10000,
+      //     name: '[name].[ext]',
+      //   },
+      // }
     ]
   },
   plugins: [

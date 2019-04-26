@@ -12,6 +12,7 @@
     </h4>
     <mediaelement ref="vPlay" :autoplay="true" :forceLive="forceLive" preload="true" :source="selected" width="500px" height="500px"></mediaelement>
     <button @click="close">关闭播放</button>
+    <button @click="live">切换进度</button>
   </div>
 </template>
 
@@ -22,6 +23,7 @@ export default {
     return {
       selected: 'https://d2zihajmogu5jn.cloudfront.net/bipbop-advanced/bipbop_16x9_variant.m3u8',
       forceLive: false,
+      autoplay: true,
       sources: [{
         name: 'MP4',
         value: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4'
@@ -65,6 +67,9 @@ export default {
     console.log(this.$refs.vPlay.Features('isIE'));
   },
   methods: {
+    live() {
+      this.forceLive = true;
+    },
     close() {
       console.log(this.$refs);
       this.$refs.vPlay.remove();

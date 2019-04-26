@@ -1,9 +1,10 @@
 <template>
-  <video :height="height" :width="width" :autoplay="autoplay" :preload="preload" >
+  <video :height="height" :width="width" :autoplay="autoplay" :preload="preload">
   </video>
 </template>
 
 <style>
+@import '../node_modules/mediaelement/build/mediaelementplayer.min.css';
 .mejs__container {
   min-width: auto !important;
 }
@@ -39,11 +40,12 @@ mediaelementwrapper object{
 // import flvjs from 'flv.js';
 // import hlsjs from 'hls.js';
 import 'mediaelement';
-import 'mediaelement/build/mediaelementplayer.min.css';
+// import 'mediaelement/build/mediaelementplayer.min.css';
 // import 'mediaelement/build/mediaelement-flash-video.swf';
 // import 'mediaelement/build/mediaelement-flash-video-hls.swf';
 
 export default {
+  name: 'mediaelement',
   props: {
     source: {
       type: String,
@@ -89,6 +91,7 @@ export default {
     }
   },
   data: () => ({
+    refresh: false,
     player: null,
   }),
   mounted() {
@@ -104,13 +107,13 @@ export default {
       // (by default, this is set as `sameDomain`)
       // shimScriptAccess: 'always',
       success: (mediaElement, originalNode, instance) => {
+        instance.setSrc(componentObject.source);
         if (componentObject.autoplay) {
-          instance.setSrc(componentObject.source);
+          mediaElement.addEventListener('canplay', function () {
+              instance.play();
+          });
         }
         this.success(mediaElement, originalNode, instance);
-				mediaElement.addEventListener('canplay', function () {
-            instance.play();
-				});
         // mediaElement.addEventListener(Hls.Events.MEDIA_ATTACHED, function () {
         //   // All the code when this event is reached...
         //   console.log('Media attached!');
@@ -142,6 +145,12 @@ export default {
       this.player.setSrc(newSource);
       this.player.setPoster('');
       this.player.load();
+    },
+    forceLive: function (newForceLive, oldForceLive) {
+      if (newForceLive === oldForceLive) {
+        return;
+      }
+      this.player.options.forceLive = newForceLive;
     }
   },
 };
